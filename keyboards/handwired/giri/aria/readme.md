@@ -1,6 +1,8 @@
-# ortho7x5
+# aria
 
-![giri](https://i.imgur.com/EmvdWTS.jpg)
+![giri](https://i.imgur.com/7HjXotx.jpg)
+![giri](https://i.imgur.com/o7rhdtJ.jpg)
+![giri](https://i.imgur.com/gi0ZL6s.jpg)
 
 *A short description of the keyboard/project*
 

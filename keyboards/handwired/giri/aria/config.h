@@ -29,24 +29,31 @@
 #define MATRIX_ROW_PINS \
     { A9, A15, B3, B4, B5 }  
 #define MATRIX_COL_PINS \
-    { B10, A8, B15, B0, A1, A7, A6, B1, A4, A5, A2, A3, C14, A0, C15 }
+    { B10, A8, B15, B0, A1, A7, A6, B1, A4, A5, A2, A3, C13, A0, C15 }
 #define UNUSED_PINS \
-    { A10, A11, A12, B2, B12, B13, B14, B15  }
+    { A10, A11, A12, B2, B12, B13, B14, B15, C14  }
 
 /* COL2ROW, ROW2COL */
 #define DIODE_DIRECTION COL2ROW
 
 /* turn off after debugging */
-#define DEBUG_MATRIX_SCAN_RATE
+// #define DEBUG_MATRIX_SCAN_RATE
 
 #define LED_DRIVER_COUNT 1
 #define DRIVER_LED_TOTAL 66
 #define LED_DRIVER_ADDR_1 0b1110100
-/*
-#define I2C1_SCL_PIN        B8
-#define I2C1_SDA_PIN        B9
-*/
 
+/* 255 is maximum intensity */
+#define LED_DISABLE_WHEN_USB_SUSPENDED 
+// limits maximum brightness of LEDs
+#define LED_MATRIX_MAXIMUM_BRIGHTNESS 128 
+// limits in milliseconds how frequently an animation will update the LEDs. 16 
+// (16ms) is equivalent to limiting to 60fps (increases keyboard 
+// responsiveness)
+// At 16ms matrix scan frequency redues from 1000 to 350, at 100ms it is 880 and 
+// at 1000ms it is 980
+#define LED_MATRIX_LED_FLUSH_LIMIT 100 
+                                          
 /*
  * Split Keyboard specific options, make sure you have 'SPLIT_KEYBOARD = yes' in your rules.mk, and define SOFT_SERIAL_PIN.
  */

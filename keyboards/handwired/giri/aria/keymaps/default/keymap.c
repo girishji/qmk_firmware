@@ -25,40 +25,37 @@ enum layer_names {
     _FN
 };
 
-// MO(_FN)
-// KC_CAPS, KC_BTN1, OSM(MOD_LGUI), OSM(MOD_LSFT), KC_SPC, RESET, KC_BSPC, KC_ENT, OSM(MOD_RGUI), KC_LEFT, KC_DOWN, KC_RIGHT, KC_CAPS
-// KC_CAPS, KC_BTN1, KC_LCMD, KC_LSFT, KC_SPC, RESET, KC_BSPC, KC_ENT, KC_RCMD, KC_LEFT, KC_DOWN, KC_RIGHT, KC_CAPS
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Base */
     [_BASE] = LAYOUT(
         CMD_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_PGUP, KC_PGDN,
 	KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, 
-	KC_LCTL, KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT, OSM(MOD_RCTL), 
-	KC_LALT, KC_GRV, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_UP, OSM(MOD_RALT),
-        KC_BTN1, KC_BTN3, OSM(MOD_LGUI), OSM(MOD_LSFT), KC_SPC, MO(_FN), KC_BSPC, KC_ENT, OSM(MOD_RGUI), KC_LEFT, KC_DOWN, KC_RIGHT, KC_CAPS
+	OSM(MOD_LCTL), KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT, OSM(MOD_RCTL), 
+	OSM(MOD_LSFT), KC_GRV, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_UP, OSM(MOD_RSFT),
+        OSL(_FN), OSM(MOD_LALT), KC_CAPS, OSM(MOD_LSFT), KC_BSPC, OSM(MOD_LGUI), KC_SPC, KC_ENT, OSM(MOD_RALT), KC_LEFT, KC_DOWN, KC_RIGHT, KC_F18 
         ),
     [_FN] = LAYOUT(
-        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, LCMD(KC_LEFT), LCMD(KC_RIGHT), KC_HOME, KC_END,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_F11, KC_F12,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_WH_U, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_WH_D, _______, RESET
+        KC_BTN1, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_WH_U, _______,
+        _______, KC_BTN3, BL_TOGG, _______, _______, RESET, _______, _______, _______, BL_DEC, KC_WH_D, BL_INC, _______
     )
 };
 
 void keyboard_post_init_user(void) {
   // Customise these values to desired behaviour
-  debug_enable=true;
-  debug_matrix=true;
-  //debug_keyboard=true;
-  //debug_mouse=true;
+  //debug_enable=true;
+  //debug_matrix=true;
+  ////debug_keyboard=true;
+  ////debug_mouse=true;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // If console is enabled, it will print the matrix position and status of each key pressed
 #ifdef CONSOLE_ENABLE
-    uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
+    // uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
 #endif
 
   switch (keycode) {
@@ -69,7 +66,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       } else {
         // when keycode QMKBEST is released
       }
-      break;
+      return false;  // no more processing necessary
 
     case CMD_GRV:
       if (record->event.pressed) {
@@ -82,7 +79,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       } else {
         unregister_code(KC_GRV);
       }
-      break;
+      return true;
     case CMD_TAB:
       if (record->event.pressed) {
         if (!is_cmd_tab_active) {
@@ -94,10 +91,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       } else {
         unregister_code(KC_TAB);
       }
-      break;
+      return true;
+    default:
+      return true; // Process all other keycodes normally
   }
 
-  return true;
 }
 
 void matrix_scan_user(void) { // The very important timer.  
@@ -114,7 +112,18 @@ void matrix_scan_user(void) { // The very important timer.
   }
 }
 
-#if 0
+/* Enable some leds when capslock is on */
+void led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+  if (host_keyboard_led_state().caps_lock) {
+        for (uint8_t i = led_min; i <= led_max; i++) {
+            if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
+                led_matrix_set_value(i, 0xc0);
+            }
+        }
+    }
+}
+
+#if 1
 const is31_led PROGMEM g_is31_leds[DRIVER_LED_TOTAL] = {
 /* Refer to IS31 manual for these locations
  *    driver

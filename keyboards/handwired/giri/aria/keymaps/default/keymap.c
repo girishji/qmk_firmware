@@ -26,21 +26,21 @@ enum layer_names {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    /* Base */
-    [_BASE] = LAYOUT(
-        CMD_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_PGUP, KC_PGDN,
-	KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, 
-	OSM(MOD_LCTL), KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT, OSM(MOD_RCTL), 
-	OSM(MOD_LSFT), KC_GRV, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_UP, OSM(MOD_RSFT),
-        OSL(_FN), OSM(MOD_LALT), KC_CAPS, OSM(MOD_LSFT), KC_BSPC, OSM(MOD_LGUI), KC_SPC, KC_ENT, OSM(MOD_RALT), KC_LEFT, KC_DOWN, KC_RIGHT, KC_F18 
-        ),
-    [_FN] = LAYOUT(
-        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, LCMD(KC_LEFT), LCMD(KC_RIGHT), KC_HOME, KC_END,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_F11, KC_F12,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        KC_BTN1, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_WH_U, _______,
-        _______, KC_BTN3, BL_TOGG, _______, _______, RESET, _______, _______, _______, BL_DEC, KC_WH_D, BL_INC, _______
-    )
+  /* Base */
+  [_BASE] = LAYOUT(
+    CMD_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_PGUP, KC_PGDN,
+    KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, LGUI(KC_LEFT), 
+    OSM(MOD_LCTL), KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT, OSM(MOD_RCTL), 
+    OSM(MOD_LSFT), KC_GRV, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_UP, OSM(MOD_RSFT),
+    OSM(MOD_LALT), KC_BTN1, OSL(_FN), OSM(MOD_LGUI), KC_BSPC, KC_CAPS, KC_SPC, LGUI(KC_RIGHT), KC_ENT, OSM(MOD_RALT), KC_LEFT, KC_DOWN, KC_RIGHT, KC_BSLS 
+  ),
+  [_FN] = LAYOUT(
+    _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, LCMD(KC_LEFT), LCMD(KC_RIGHT),
+    _______, _______, _______, _______, _______, _______, _______, LCMD(KC_LEFT), KC_PGDN, KC_PGUP, LCMD(KC_RIGHT), _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_WH_U, _______,
+    RESET, KC_BTN3, _______, BL_TOGG, _______, _______, _______, _______, _______, _______, BL_DEC, KC_WH_D, BL_INC, RESET
+  )
 };
 
 void keyboard_post_init_user(void) {

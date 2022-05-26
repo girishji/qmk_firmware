@@ -26,6 +26,6 @@ LED_MATRIX_ENABLE = yes
 LED_MATRIX_DRIVER = IS31FL3731
 
 # turn this off after debugging
-CONSOLE_ENABLE = yes
+# CONSOLE_ENABLE = yes
 
 SRC += blackpill_f401.c

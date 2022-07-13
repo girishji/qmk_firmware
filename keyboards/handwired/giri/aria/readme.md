@@ -32,6 +32,20 @@ flashing.
 ## Wiring instructions
 
 - On Blackpill boards, **avoid** using the following pins, since they will cause either USB enumeration or the DFU bootloader to not work correctly:
-  - **USB-related pins:** `PA10`, `PA11`, `PA12`
-  - **BOOT1 pin:** `PB2`
+  - **USB-related pins:** `PA10`, `PA11`, `PA12` (PA11 is USB D- and PA12 is USB D+)
+  - **BOOT1 pin:** `PB2` (board pulldown resistor)
   - **LED pin:** `PC13`
+  - **Crystal:** `PC14` and `PC15` are connected to crystal
+
+Note: 
+- A11 and A12 are used by USB. You cannot use these, basically.
+- A10 needs a pullup if you use it, to ensure that it jumps to the bootloader corretly.
+- A9 has an internal pulldown resistor. It should be avoided, but can be used with a pullup resistor in a pinch.
+- B2 i used by BOOT1, so is unusable.
+- A0 is used by the "USER" button
+- C13 is used by the led on the blackpill controller.
+- C14 and C15 are usable, IIRC. But have some issues with how they should be used (C13 too, eg, it shouldn't be used for leds.... )
+
+the rest are usable.
+
+(https://www.reddit.com/r/ErgoMechKeyboards/comments/t0kymt/questions_about_split_blackpill_design/)

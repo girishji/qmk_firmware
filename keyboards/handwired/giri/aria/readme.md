@@ -34,3 +34,4 @@ flashing.
 - On Blackpill boards, **avoid** using the following pins, since they will cause either USB enumeration or the DFU bootloader to not work correctly:
   - **USB-related pins:** `PA10`, `PA11`, `PA12`
   - **BOOT1 pin:** `PB2`
+  - **LED pin:** `PC13`

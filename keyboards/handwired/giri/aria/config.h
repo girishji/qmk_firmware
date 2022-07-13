@@ -26,6 +26,9 @@
  *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
  *
  */
+
+// C13 is led pin; do not use it
+//
 #define MATRIX_ROW_PINS \
     { A9, A15, B3, B4, B5 }  
 #define MATRIX_COL_PINS \

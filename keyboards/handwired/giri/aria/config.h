@@ -40,6 +40,7 @@
 #define DIODE_DIRECTION COL2ROW
 
 /* turn off after debugging */
+// getting about 850
 // #define DEBUG_MATRIX_SCAN_RATE
 
 #define LED_DRIVER_COUNT 1
@@ -48,8 +49,8 @@
 
 /* 255 is maximum intensity */
 #define LED_DISABLE_WHEN_USB_SUSPENDED 
-// limits maximum brightness of LEDs
-#define LED_MATRIX_MAXIMUM_BRIGHTNESS 128 
+// limits maximum brightness of LEDs (max 256)
+#define LED_MATRIX_MAXIMUM_BRIGHTNESS 74
 // limits in milliseconds how frequently an animation will update the LEDs. 16 
 // (16ms) is equivalent to limiting to 60fps (increases keyboard 
 // responsiveness)

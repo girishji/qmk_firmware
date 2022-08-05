@@ -113,7 +113,6 @@ void led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 }
 
-#if 1
 const is31_led PROGMEM g_is31_leds[DRIVER_LED_TOTAL] = {
 /* Refer to IS31 manual for these locations
  *    driver
@@ -152,5 +151,3 @@ led_config_t g_led_config = { {
   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 } };
-
-#endif

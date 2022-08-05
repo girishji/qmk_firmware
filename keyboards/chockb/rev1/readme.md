@@ -1,23 +1,30 @@
-# aria
+# Kailh Choc Ergo Keyboard
 
-![giri](https://i.imgur.com/7HjXotx.jpg)
-![giri](https://i.imgur.com/o7rhdtJ.jpg)
-![giri](https://i.imgur.com/gi0ZL6s.jpg)
+Keyboards using Choc switches are not common. These switches are low-profile
+and can be used with 15gf light springs. PCB for this backlit keyboard can be
+found [here](https://github.com/girishji/choc-keyboard).
 
-*A short description of the keyboard/project*
+![3d printed case](https://i.imgur.com/risvk8Q.jpg?1)
+![3d printed case](https://i.imgur.com/H77lyNH.jpg?1)
+![front side](https://i.imgur.com/7ngL65q.jpg)
+![back side](https://i.imgur.com/xvfgL1L.jpg)
 
 * Keyboard Maintainer: [Girish Palya](https://github.com/girishji)
 * Hardware Supported: Black pill STM32F401
 
 Make example for this keyboard (after setting up your build environment):
 
-    make handwired/giri/aria:default
+    make chockb/rev1:default
 
 Flashing example for this keyboard:
 
-    make handwired/giri/aria:default:flash
+    make chockb/rev1:default:flash
 
-See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
+See the [build environment
+setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make
+instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more
+information. Brand new to QMK? Start with our [Complete Newbs
+Guide](https://docs.qmk.fm/#/newbs).
 
 ## Bootloader
 
@@ -31,21 +38,5 @@ flashing.
 
 ## Wiring instructions
 
-- On Blackpill boards, **avoid** using the following pins, since they will cause either USB enumeration or the DFU bootloader to not work correctly:
-  - **USB-related pins:** `PA10`, `PA11`, `PA12` (PA11 is USB D- and PA12 is USB D+)
-  - **BOOT1 pin:** `PB2` (board pulldown resistor)
-  - **LED pin:** `PC13`
-  - **Crystal:** `PC14` and `PC15` are connected to crystal
+Blackpill can only be soldered one way. Please see the pictures.
 
-Note: 
-- A11 and A12 are used by USB. You cannot use these, basically.
-- A10 needs a pullup if you use it, to ensure that it jumps to the bootloader corretly.
-- A9 has an internal pulldown resistor. It should be avoided, but can be used with a pullup resistor in a pinch.
-- B2 i used by BOOT1, so is unusable.
-- A0 is used by the "USER" button
-- C13 is used by the led on the blackpill controller.
-- C14 and C15 are usable, IIRC. But have some issues with how they should be used (C13 too, eg, it shouldn't be used for leds.... )
-
-the rest are usable.
-
-(https://www.reddit.com/r/ErgoMechKeyboards/comments/t0kymt/questions_about_split_blackpill_design/)

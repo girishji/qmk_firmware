@@ -23,8 +23,8 @@ RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
 AUDIO_ENABLE = no           # Audio output
 DYNAMIC_MACRO_ENABLE = yes  # Dynamic macros
 
-LED_MATRIX_ENABLE = yes
-LED_MATRIX_DRIVER = IS31FL3731
+# LED_MATRIX_ENABLE = yes
+# LED_MATRIX_DRIVER = IS31FL3731
 # SRC += blackpill_f401.c
 
 # turn this off after debugging

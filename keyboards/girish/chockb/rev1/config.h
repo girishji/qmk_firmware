@@ -51,7 +51,7 @@
 /* 255 is maximum intensity */
 #define LED_DISABLE_WHEN_USB_SUSPENDED 
 // limits maximum brightness of LEDs (max 256)
-#define LED_MATRIX_MAXIMUM_BRIGHTNESS 90
+#define LED_MATRIX_MAXIMUM_BRIGHTNESS 100
 // limits in milliseconds how frequently an animation will update the LEDs. 16 
 // (16ms) is equivalent to limiting to 60fps (increases keyboard 
 // responsiveness)

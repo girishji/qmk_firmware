@@ -21,22 +21,23 @@
 // Tap twice the shift key to enable caps on the current word being typed
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 
-// Using blackpill STM32F401
-#define MATRIX_ROW_PINS \
-    { B10, B1, B13, B14, B15 }
-#define MATRIX_COL_PINS \
-    { B0, A7, A6, A5, A4, A3, A2, A1, B3, B4, B5, B12, B9, A8, A15 }
+// // These pins are just placeholders
+// #define MATRIX_ROW_PINS \
+//     { GP20, GP19, GP18, GP15, GP14 }
+// #define MATRIX_COL_PINS \
+//     { GP29, GP28, GP27, GP26, GP25, GP24, GP23, GP22, GP21, GP0, GP1, GP2, GP3, GP4, GP5 }
 
-/* PT requires time to 'rise' after IR has been powered on. Read the GPIO input
- * pin only after PT voltage has stabilized. */
-#define WAIT_AFTER_COL_SELECT 76
-/* PT requires time to 'fall' after IR has been switched off. Wait until
- * voltage across PT has stabilized. Otherwise scanning of next column will be
- * affected. */
-#define WAIT_AFTER_COL_UNSELECT 110
+// /* PT requires time to 'rise' after IR has been powered on. Read the GPIO input
+//  * pin only after PT voltage has stabilized. */
+// #define WAIT_AFTER_COL_SELECT 76
+// /* PT requires time to 'fall' after IR has been switched off. Wait until
+//  * voltage across PT has stabilized. Otherwise scanning of next column will be
+//  * affected. */
+// #define WAIT_AFTER_COL_UNSELECT 110
 
+// enabled by default
 // Enable 1000hz scan rate
-#define USB_POLLING_INTERVAL_MS 1
+// #define USB_POLLING_INTERVAL_MS 1
 
 /* turn off after debugging */
 // #define DEBUG_MATRIX_SCAN_RATE

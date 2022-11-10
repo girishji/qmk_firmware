@@ -9,44 +9,26 @@
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 15
 
-/*
- * Keyboard Matrix Assignments
- *
- * Change this to how you wired your keyboard
- * COLS: pins used for columns, left to right
- * ROWS: pins used for rows, top to bottom
- *
- */
-
 // Tap twice the shift key to enable caps on the current word being typed
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 
-// // These pins are just placeholders
-// #define MATRIX_ROW_PINS \
-//     { GP20, GP19, GP18, GP15, GP14 }
-// #define MATRIX_COL_PINS \
-//     { GP29, GP28, GP27, GP26, GP25, GP24, GP23, GP22, GP21, GP0, GP1, GP2, GP3, GP4, GP5 }
+/*
+// These pins are just placeholders
+#define MATRIX_ROW_PINS \
+    { GP20, GP19, GP18, GP15, GP14 }
+#define MATRIX_COL_PINS \
+    { GP29, GP28, GP27, GP26, GP25, GP24, GP23, GP22, GP21, GP0, GP1, GP2, GP3, GP4, GP5 }
+*/
 
-// /* PT requires time to 'rise' after IR has been powered on. Read the GPIO input
-//  * pin only after PT voltage has stabilized. */
-// #define WAIT_AFTER_COL_SELECT 76
-// /* PT requires time to 'fall' after IR has been switched off. Wait until
-//  * voltage across PT has stabilized. Otherwise scanning of next column will be
-//  * affected. */
-// #define WAIT_AFTER_COL_UNSELECT 110
-
-// enabled by default
 // Enable 1000hz scan rate
-// #define USB_POLLING_INTERVAL_MS 1
+#define USB_POLLING_INTERVAL_MS 1
 
 /* turn off after debugging */
 // #define DEBUG_MATRIX_SCAN_RATE
 
 #define LED_DRIVER_COUNT 1
-#define DRIVER_LED_TOTAL 74
+#define DRIVER_LED_TOTAL 72
 #define LED_DRIVER_ADDR_1 0b1110100
-
-/* 255 is maximum intensity */
 #define LED_DISABLE_WHEN_USB_SUSPENDED
 // limits maximum brightness of LEDs (max 256)
 #define LED_MATRIX_MAXIMUM_BRIGHTNESS 120
@@ -56,6 +38,20 @@
 // At 16ms matrix scan frequency redues from 1000 to 350, at 100ms it is 880 and 
 // at 1000ms it is 980
 #define LED_MATRIX_LED_FLUSH_LIMIT 100
+
+// #ifdef OLED_ENABLE
+//     #define OLED_DISPLAY_128X64
+//     #define SPLIT_OLED_ENABLE
+//     #define OLED_DISPLAY_ADDRESS     0x3C //0x78
+//     #define OLED_BRIGHTNESS 128
+//     #define I2C_DRIVER        I2CD3
+//     #define I2C1_SCL_PIN     A8  //B10 I2C2 ok // B6 B8 I2C1 has some problems in some aliexpress f401 try to use weact f411 genuine( only boards with bootloaders problem?)
+//     #define I2C1_SDA_PIN     B4   //B3  I2C2 ok // B7 B9 I2C1 has some problems in some aliexpress f401 try to use weact f411 genuine( only boards with bootloaders problem?)
+//     #define I2C1_SCL_PAL_MODE 4
+//     #define I2C1_SDA_PAL_MODE 9
+//     #define I2C1_CLOCK_SPEED  400000
+//     #define I2C1_DUTY_CYCLE FAST_DUTY_CYCLE_2
+// #endif 
 
 
 /*

@@ -30,9 +30,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define WAIT_AFTER_COL_SELECT 100
 #endif
 
-#define COL_COUNT = 9
-#define ROW_COUNT = 4
-#define MATRIX_COUNT = 2
+#define COL_COUNT 9
+#define ROW_COUNT 4
+#define MATRIX_COUNT 2
 #define MATRIX_ROW_PINS_A \
     { GP20, GP19, GP18, GP15 }
 #define MATRIX_ROW_PINS_B \
@@ -49,14 +49,10 @@ static const pin_t col_pins_b[COL_COUNT] = MATRIX_COL_PINS_B;
 matrix_row_t col_selector[MATRIX_COLS] = {0};
 
 void matrix_init_custom(void) {
-    // initialize column pins to be Input
     for (uint8_t i = 0; i < MATRIX_COUNT; i++) {
+        // initialize column pins to be Input
         for (uint8_t col = 0; col < COL_COUNT; col++) {
-            if (i == 0) {
-                pin_t pin = col_pins_a[col];
-            } else {
-                pin_t pin = col_pins_b[col];
-            }
+            pin_t pin = (i == 0) ? col_pins_a[col] : col_pins_b[col];
             if (pin != NO_PIN) {
                 ATOMIC_BLOCK_FORCEON {
                     setPinInputHigh(pin);
@@ -64,15 +60,9 @@ void matrix_init_custom(void) {
                 }
             }
         }
-    }
-    // initialize row pins to be Output and set them low
-    for (uint8_t i = 0; i < MATRIX_COUNT; i++) {
+        // initialize row pins to be Output and set them low
         for (uint8_t row = 0; row < ROW_COUNT; row++) {
-            if (i == 0) {
-                pin_t pin = row_pins_a[row];
-            } else {
-                pin_t pin = row_pins_b[row];
-            }
+            pin_t pin = (i == 0) ? row_pins_a[row] : row_pins_b[row];
             if (pin != NO_PIN) {
                 ATOMIC_BLOCK_FORCEON {
                     setPinOutput(pin);
@@ -88,61 +78,66 @@ void matrix_init_custom(void) {
     }
 }
 
-#define SETCOL(pin, row, shifter) (if (pin == 1) row |= shifter else row &= ~shifter;)
+static inline void set_col_of_row(uint16_t pin_val, matrix_row_t *row, matrix_row_t *shifter) {
+    if (pin_val == 1) {
+        *row |= *shifter;
+    } else {
+        *row &= ~(*shifter);
+    }
+}
 
 uint8_t matrix_scan_custom(matrix_row_t current_matrix[]) {
     matrix_row_t curr_matrix[MATRIX_ROWS] = {0};
 
-    matrix_row_t row_shifter;
     for (uint8_t row = 0; row < ROW_COUNT; row++) {
         // Matrix A
         //
         pin_t pin = row_pins_a[row];
         writePinHigh(pin);
-        wait_us(WAIT_AFTER_ROW_SELECT);
+        wait_us(WAIT_AFTER_COL_SELECT);
 
         for (uint8_t col = 0; col < COL_COUNT; col++) {
-            SETCOL(readPin(col_pins_a[col]), curr_matrix[row], col_selector[col])
+            set_col_of_row(readPin(col_pins_a[col]), curr_matrix + row, col_selector + col);
         }
         writePinLow(pin);
 
         // Matrix B
         //
-        pin_t pin = row_pins_b[row];
+        pin = row_pins_b[row];
         writePinHigh(pin);
-        wait_us(WAIT_AFTER_ROW_SELECT);
+        wait_us(WAIT_AFTER_COL_SELECT);
 
         switch (row + ROW_COUNT) {
             case ROW_COUNT:
                 for (uint8_t col = 0; col < COL_COUNT; col++) {
-                    SETCOL(readPin(col_pins_a[col]), curr_matrix[ROW_COUNT], col_selector[col])
+                    set_col_of_row(readPin(col_pins_a[col]), curr_matrix + ROW_COUNT, col_selector + col);
                 }
                 break;
             case ROW_COUNT + 1:
                 for (uint8_t col = 0; col < 5; col++) {
-                    SETCOL(readPin(col_pins_a[col]), curr_matrix[MATRIX_ROWS - 1], col_selector[col + COL_COUNT])
+                    set_col_of_row(readPin(col_pins_a[col]), curr_matrix + MATRIX_ROWS - 1, col_selector + col + COL_COUNT);
                 }
-                SETCOL(readPin(col_pins_a[5]), curr_matrix[MATRIX_ROWS - 2], col_selector[12])
-                SETCOL(readPin(col_pins_a[6]), curr_matrix[MATRIX_ROWS - 2], col_selector[11])
-                SETCOL(readPin(col_pins_a[7]), curr_matrix[MATRIX_ROWS - 2], col_selector[10])
-                SETCOL(readPin(col_pins_a[8]), curr_matrix[MATRIX_ROWS - 2], col_selector[9])
+                set_col_of_row(readPin(col_pins_a[5]), curr_matrix + MATRIX_ROWS - 2, col_selector + 12);
+                set_col_of_row(readPin(col_pins_a[6]), curr_matrix + MATRIX_ROWS - 2, col_selector + 11);
+                set_col_of_row(readPin(col_pins_a[7]), curr_matrix + MATRIX_ROWS - 2, col_selector + 10);
+                set_col_of_row(readPin(col_pins_a[8]), curr_matrix + MATRIX_ROWS - 2, col_selector + 9);
                 break;
 
             case ROW_COUNT + 2:
                 for (uint8_t col = 0; col < 6; col++) {
-                    SETCOL(readPin(col_pins_a[col]), curr_matrix[MATRIX_ROWS - 3], col_selector[col + COL_COUNT])
+                    set_col_of_row(readPin(col_pins_a[col]), curr_matrix + MATRIX_ROWS - 3, col_selector + col + COL_COUNT);
                 }
-                SETCOL(readPin(col_pins_a[6]), curr_matrix[MATRIX_ROWS - 2], col_selector[13])
-                SETCOL(readPin(col_pins_a[7]), curr_matrix[1], col_selector[13])
-                SETCOL(readPin(col_pins_a[8]), curr_matrix[1], col_selector[12])
+                set_col_of_row(readPin(col_pins_a[6]), curr_matrix + MATRIX_ROWS - 2, col_selector + 13);
+                set_col_of_row(readPin(col_pins_a[7]), curr_matrix + 1, col_selector + 13);
+                set_col_of_row(readPin(col_pins_a[8]), curr_matrix + 1, col_selector + 12);
                 break;
             case ROW_COUNT + 3:
                 for (uint8_t col = 0; col < 6; col++) {
-                    SETCOL(readPin(col_pins_a[col]), curr_matrix[0], col_selector[col + COL_COUNT])
+                    set_col_of_row(readPin(col_pins_a[col]), curr_matrix + 0, col_selector + col + COL_COUNT);
                 }
-                SETCOL(readPin(col_pins_a[6]), curr_matrix[1], col_selector[11])
-                SETCOL(readPin(col_pins_a[7]), curr_matrix[1], col_selector[10])
-                SETCOL(readPin(col_pins_a[8]), curr_matrix[1], col_selector[9])
+                set_col_of_row(readPin(col_pins_a[6]), curr_matrix + 1, col_selector + 11);
+                set_col_of_row(readPin(col_pins_a[7]), curr_matrix + 1, col_selector + 10);
+                set_col_of_row(readPin(col_pins_a[8]), curr_matrix + 1, col_selector + 9);
                 break;
         }
         writePinLow(pin);

@@ -2,18 +2,19 @@
 #
 
 # MCU name
-MCU =
-BOARD =
+MCU = RP2040
+BOARD = GENERIC_RP_RP2040
+
 
 # Bootloader selection
-BOOTLOADER =
+BOOTLOADER = rp2040
+SERIAL_DRIVER = vendor
+# SERIAL_DRIVER = usart
 
 # Build Options
 #   change yes to no to disable
 #
-KEYBOARD_SHARED_EP = yes
-
-BOOTMAGIC_ENABLE = yes      # Enable Bootmagic Lite
+BOOTMAGIC_ENABLE = no       # Enable Bootmagic Lite
 MOUSEKEY_ENABLE = yes       # Mouse keys
 EXTRAKEY_ENABLE = yes       # Audio control and System control
 COMMAND_ENABLE = no         # Commands for debug and configuration

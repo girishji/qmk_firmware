@@ -9,17 +9,14 @@
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 15
 
-/*
- * Keyboard Matrix Assignments
- *
- * Change this to how you wired your keyboard
- * COLS: pins used for columns, left to right
- * ROWS: pins used for rows, top to bottom
- *
- */
-
 // Tap twice the shift key to enable caps on the current word being typed
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
+
+// Mod tap does not register otherwise
+#define TAP_CODE_DELAY 5
+
+// https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md
+#define TAPPING_TERM_PER_KEY
 
 // Using blackpill STM32F401
 #define MATRIX_ROW_PINS \

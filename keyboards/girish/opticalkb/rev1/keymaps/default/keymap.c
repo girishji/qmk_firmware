@@ -106,9 +106,18 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case KC_LSFT:
         case KC_RSFT:
         case OSM(MOD_LSFT):
-            return TAPPING_TERM + 800;
+            return TAPPING_TERM + 400;
         default:
             return TAPPING_TERM;
+    }
+}
+
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(_FN, KC_ESC):
+            return true;
+        default:
+            return false;
     }
 }
 

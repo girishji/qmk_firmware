@@ -18,6 +18,10 @@
 // https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md
 #define TAPPING_TERM_PER_KEY
 
+// https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md
+#define RETRO_TAPPING_PER_KEY
+#define PERMISSIVE_HOLD
+
 // Using blackpill STM32F401
 #define MATRIX_ROW_PINS \
     { B10, B1, B13, B14, B15 }

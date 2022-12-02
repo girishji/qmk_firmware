@@ -12,13 +12,15 @@
 // Tap twice the shift key to enable caps on the current word being typed
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 
-/*
-// These pins are just placeholders
-#define MATRIX_ROW_PINS \
-    { GP20, GP19, GP18, GP15, GP14 }
-#define MATRIX_COL_PINS \
-    { GP29, GP28, GP27, GP26, GP25, GP24, GP23, GP22, GP21, GP0, GP1, GP2, GP3, GP4, GP5 }
-*/
+// Mod tap does not register otherwise
+#define TAP_CODE_DELAY 5
+
+// https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md
+#define TAPPING_TERM_PER_KEY
+
+// https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md
+#define RETRO_TAPPING_PER_KEY
+#define PERMISSIVE_HOLD
 
 // Enable 1000hz scan rate
 #define USB_POLLING_INTERVAL_MS 1
@@ -27,7 +29,7 @@
 // #define DEBUG_MATRIX_SCAN_RATE
 
 #define LED_DRIVER_COUNT 1
-#define DRIVER_LED_TOTAL 72
+#define LED_MATRIX_LED_COUNT 72
 #define LED_DRIVER_ADDR_1 0b1110100
 #define LED_DISABLE_WHEN_USB_SUSPENDED
 // limits maximum brightness of LEDs (max 256)
@@ -38,6 +40,10 @@
 // At 16ms matrix scan frequency redues from 1000 to 350, at 100ms it is 880 and 
 // at 1000ms it is 980
 #define LED_MATRIX_LED_FLUSH_LIMIT 100
+
+// #define I2C_DRIVER I2CD1
+#define I2C1_SDA_PIN GP16
+#define I2C1_SCL_PIN GP17
 
 // #ifdef OLED_ENABLE
 //     #define OLED_DISPLAY_128X64

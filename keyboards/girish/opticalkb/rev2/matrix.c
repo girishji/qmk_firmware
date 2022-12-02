@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DEBOUNCE 0
 
 #ifndef WAIT_AFTER_COL_SELECT
-#    define WAIT_AFTER_COL_SELECT 100
+#    define WAIT_AFTER_COL_SELECT 10
 #endif
 
 #define COL_COUNT 9
@@ -107,37 +107,37 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[]) {
         writePinHigh(pin);
         wait_us(WAIT_AFTER_COL_SELECT);
 
-        switch (row + ROW_COUNT) {
-            case ROW_COUNT:
+        switch (row) {
+            case 0:
                 for (uint8_t col = 0; col < COL_COUNT; col++) {
-                    set_col_of_row(readPin(col_pins_a[col]), curr_matrix + ROW_COUNT, col_selector + col);
+                    set_col_of_row(readPin(col_pins_b[col]), curr_matrix + ROW_COUNT, col_selector + col);
                 }
                 break;
-            case ROW_COUNT + 1:
+            case 1:
                 for (uint8_t col = 0; col < 5; col++) {
-                    set_col_of_row(readPin(col_pins_a[col]), curr_matrix + MATRIX_ROWS - 1, col_selector + col + COL_COUNT);
+                    set_col_of_row(readPin(col_pins_b[col]), curr_matrix + ROW_COUNT, col_selector + col + COL_COUNT);
                 }
-                set_col_of_row(readPin(col_pins_a[5]), curr_matrix + MATRIX_ROWS - 2, col_selector + 12);
-                set_col_of_row(readPin(col_pins_a[6]), curr_matrix + MATRIX_ROWS - 2, col_selector + 11);
-                set_col_of_row(readPin(col_pins_a[7]), curr_matrix + MATRIX_ROWS - 2, col_selector + 10);
-                set_col_of_row(readPin(col_pins_a[8]), curr_matrix + MATRIX_ROWS - 2, col_selector + 9);
+                set_col_of_row(readPin(col_pins_b[5]), curr_matrix + ROW_COUNT - 1, col_selector + 12);
+                set_col_of_row(readPin(col_pins_b[6]), curr_matrix + ROW_COUNT - 1, col_selector + 11);
+                set_col_of_row(readPin(col_pins_b[7]), curr_matrix + ROW_COUNT - 1, col_selector + 10);
+                set_col_of_row(readPin(col_pins_b[8]), curr_matrix + ROW_COUNT - 1, col_selector + 9);
                 break;
 
-            case ROW_COUNT + 2:
+            case 2:
                 for (uint8_t col = 0; col < 6; col++) {
-                    set_col_of_row(readPin(col_pins_a[col]), curr_matrix + MATRIX_ROWS - 3, col_selector + col + COL_COUNT);
+                    set_col_of_row(readPin(col_pins_b[col]), curr_matrix + ROW_COUNT - 2, col_selector + col + COL_COUNT);
                 }
-                set_col_of_row(readPin(col_pins_a[6]), curr_matrix + MATRIX_ROWS - 2, col_selector + 13);
-                set_col_of_row(readPin(col_pins_a[7]), curr_matrix + 1, col_selector + 13);
-                set_col_of_row(readPin(col_pins_a[8]), curr_matrix + 1, col_selector + 12);
+                set_col_of_row(readPin(col_pins_b[6]), curr_matrix + ROW_COUNT - 1, col_selector + 13);
+                set_col_of_row(readPin(col_pins_b[7]), curr_matrix + 1, col_selector + 13);
+                set_col_of_row(readPin(col_pins_b[8]), curr_matrix + 1, col_selector + 12);
                 break;
-            case ROW_COUNT + 3:
+            case 3:
                 for (uint8_t col = 0; col < 6; col++) {
-                    set_col_of_row(readPin(col_pins_a[col]), curr_matrix + 0, col_selector + col + COL_COUNT);
+                    set_col_of_row(readPin(col_pins_b[col]), curr_matrix + 0, col_selector + col + COL_COUNT);
                 }
-                set_col_of_row(readPin(col_pins_a[6]), curr_matrix + 1, col_selector + 11);
-                set_col_of_row(readPin(col_pins_a[7]), curr_matrix + 1, col_selector + 10);
-                set_col_of_row(readPin(col_pins_a[8]), curr_matrix + 1, col_selector + 9);
+                set_col_of_row(readPin(col_pins_b[6]), curr_matrix + 1, col_selector + 11);
+                set_col_of_row(readPin(col_pins_b[7]), curr_matrix + 1, col_selector + 10);
+                set_col_of_row(readPin(col_pins_b[8]), curr_matrix + 1, col_selector + 9);
                 break;
         }
         writePinLow(pin);

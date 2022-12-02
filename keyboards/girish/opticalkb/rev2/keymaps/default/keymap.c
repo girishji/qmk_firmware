@@ -24,7 +24,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, 
         OSM(MOD_LCTL), LT(_FN, KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_QUOT, OSM(MOD_RALT),
         OSM(MOD_LSFT), OSM(MOD_LSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_RSFT), KC_HOME, 
-        OSM(MOD_LALT), KC_BTN1, CMD_GRV, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, RGUI_T(KC_PGDN), KC_PGUP, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT
+        OSM(MOD_LALT), KC_BTN1, CMD_GRV, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, KC_PGDN, KC_PGUP, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT
     ),
     [_FN]   = LAYOUT(
         _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END,
@@ -100,9 +100,30 @@ void matrix_scan_user(void) { // The very important timer.
     }
 }
 
+// Returns time interval for double tap
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_LSFT:
+        case KC_RSFT:
+        case OSM(MOD_LSFT):
+            return TAPPING_TERM + 400;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(_FN, KC_ESC):
+            return true;
+        default:
+            return false;
+    }
+}
+
 #if 0
 /* Brighten leds when capslock is on */
-void led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+bool led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
   if (host_keyboard_led_state().caps_lock) {
         for (uint8_t i = led_min; i <= led_max; i++) {
             if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
@@ -110,9 +131,10 @@ void led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             }
         }
     }
+    return true;
 }
 
-const is31_led PROGMEM g_is31_leds[DRIVER_LED_TOTAL] = {
+const is31_led PROGMEM g_is31_leds[LED_MATRIX_LED_COUNT] = {
 /* Refer to IS31 manual for these locations
  *    driver
  *    |  LED address
@@ -120,8 +142,8 @@ const is31_led PROGMEM g_is31_leds[DRIVER_LED_TOTAL] = {
     { 0, C1_1  }, { 0, C1_2  }, { 0, C1_3  }, { 0, C1_4  }, { 0, C1_5  }, { 0, C1_6  }, { 0, C1_7  }, { 0, C1_8  }, { 0, C1_9  }, { 0, C1_10 }, { 0, C1_11 }, { 0, C1_12 }, { 0, C1_13 }, { 0, C1_14 }, { 0, C1_15 },
     { 0, C2_1  }, { 0, C2_2  }, { 0, C2_3  }, { 0, C2_4  }, { 0, C2_5  }, { 0, C2_6  }, { 0, C2_7  }, { 0, C2_8  }, { 0, C2_9  }, { 0, C2_10 }, { 0, C2_11 }, { 0, C2_12 }, { 0, C2_13 }, { 0, C2_14 },
     { 0, C3_1  }, { 0, C3_2  }, { 0, C3_3  }, { 0, C3_4  }, { 0, C3_5  }, { 0, C3_6  }, { 0, C3_7  }, { 0, C3_8  }, { 0, C3_9  }, { 0, C3_10 }, { 0, C3_11 }, { 0, C3_12 }, { 0, C3_13 }, { 0, C3_14 }, { 0, C3_15 },
-    { 0, C4_1  }, { 0, C4_2  }, { 0, C4_3  }, { 0, C4_4  }, { 0, C4_5  }, { 0, C4_6  }, { 0, C4_7  }, { 0, C4_8  }, { 0, C4_9  }, { 0, C4_10 }, { 0, C4_11 }, { 0, C4_12 }, { 0, C4_13 }, { 0, C4_14 }, { 0, C4_15 },
-    { 0, C5_1  }, { 0, C5_2  }, { 0, C5_3  }, { 0, C5_4  }, { 0, C5_5  }, { 0, C5_6  }, { 0, C5_7  }, { 0, C5_8  }, { 0, C5_9  }, { 0, C5_10 }, { 0, C5_11 }, { 0, C5_12 }, { 0, C5_13 }, { 0, C5_14 }, { 0, C5_15 },
+    { 0, C4_1  }, { 0, C4_2  }, { 0, C4_3  }, { 0, C4_4  }, { 0, C4_5  }, { 0, C4_6  }, { 0, C4_7  }, { 0, C4_8  }, { 0, C4_9  }, { 0, C4_10 }, { 0, C4_11 }, { 0, C4_12 }, { 0, C4_13 }, { 0, C4_14 }, 
+    { 0, C5_1  }, { 0, C5_2  }, { 0, C5_3  }, { 0, C5_4  }, { 0, C5_5  }, { 0, C5_6  }, { 0, C5_7  }, { 0, C5_8  }, { 0, C5_9  }, { 0, C5_10 }, { 0, C5_11 }, { 0, C5_12 }, { 0, C5_13 }, { 0, C5_14 },
 };
 
 led_config_t g_led_config = { {
@@ -129,21 +151,21 @@ led_config_t g_led_config = { {
   {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14 },
   { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28     },
   { 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43 },
-  { 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58 },
-  { 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73 },
+  { 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57 },
+  { 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 58 },
 }, {
   // LED Index to Physical Position
   {   0,   0  }, {  16,   0  }, {  32,   0  }, {  48,   0  }, {  64,   0  }, {  80,   0  }, {  96,   0  }, { 112,   0  }, { 128,   0  }, { 144,   0  }, { 160,   0  }, { 176,   0  }, { 192,   0  }, { 208,   0  }, { 224,   0  }, 
   {   0,   12 }, {  16,   12 }, {  32,   12 }, {  48,   12 }, {  64,   12 }, {  80,   12 }, {  96,   12 }, { 112,   12 }, { 128,   12 }, { 144,   12 }, { 160,   12 }, { 176,   12 }, { 192,   12 }, { 208,   12 },
   {   0,   24 }, {  16,   24 }, {  32,   24 }, {  48,   24 }, {  64,   24 }, {  80,   24 }, {  96,   24 }, { 112,   24 }, { 128,   24 }, { 144,   24 }, { 160,   24 }, { 176,   24 }, { 192,   24 }, { 208,   24 }, { 224,   24 }, 
-  {   0,   36 }, {  16,   36 }, {  32,   36 }, {  48,   36 }, {  64,   36 }, {  80,   36 }, {  96,   36 }, { 112,   36 }, { 128,   36 }, { 144,   36 }, { 160,   36 }, { 176,   36 }, { 192,   36 }, { 208,   36 }, { 224,   36 }, 
-  {   0,   48 }, {  16,   48 }, {  32,   48 }, {  48,   48 }, {  64,   48 }, {  80,   48 }, {  96,   48 }, { 112,   48 }, { 128,   48 }, { 144,   48 }, { 160,   48 }, { 176,   48 }, { 192,   48 }, { 208,   48 }, { 224,   48 }, 
+  {   0,   36 }, {  16,   36 }, {  32,   36 }, {  48,   36 }, {  64,   36 }, {  80,   36 }, {  96,   36 }, { 112,   36 }, { 128,   36 }, { 144,   36 }, { 160,   36 }, { 176,   36 }, { 192,   36 }, { 208,   36 }, 
+  {   0,   48 }, {  16,   48 }, {  32,   48 }, {  48,   48 }, {  64,   48 }, {  80,   48 }, {  96,   48 }, { 112,   48 }, { 128,   48 }, { 144,   48 }, { 160,   48 }, { 176,   48 }, { 192,   48 }, { 208,   48 }, 
 }, {
   // LED Index to Flag
   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 } };
 #endif

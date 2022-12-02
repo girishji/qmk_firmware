@@ -25,9 +25,10 @@ AUDIO_ENABLE = no           # Audio output
 DYNAMIC_MACRO_ENABLE = yes  # Dynamic macros
 CAPS_WORD_ENABLE = yes      # Enable current word being typed to be all caps
 
+LED_MATRIX_ENABLE = no
 # LED_MATRIX_ENABLE = yes
-# LED_MATRIX_DRIVER = IS31FL3731
-# SRC += blackpill_f401.c
+LED_MATRIX_DRIVER = IS31FL3731
+OPT_DEFS += -DHAL_USE_I2C=TRUE
 
 # turn this off after debugging
 # CONSOLE_ENABLE = yes        # Console for debug

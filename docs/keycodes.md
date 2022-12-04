@@ -625,7 +625,7 @@ See also: [Modifier Keys](feature_advanced_keycodes.md#modifier-keys)
 |`RCTL(kc)`|                                  |Hold Right Control and press `kc`                     |
 |`RSFT(kc)`|                                  |Hold Right Shift and press `kc`                       |
 |`RALT(kc)`|`ROPT(kc)`, `ALGR(kc)`            |Hold Right Alt (AltGr) and press `kc`                 |
-|`RGUI(kc)`|`RCMD(kc)`, `LWIN(kc)`            |Hold Right GUI and press `kc`                         |
+|`RGUI(kc)`|`RCMD(kc)`, `RWIN(kc)`            |Hold Right GUI and press `kc`                         |
 |`LSG(kc)` |`SGUI(kc)`, `SCMD(kc)`, `SWIN(kc)`|Hold Left Shift and Left GUI and press `kc`           |
 |`LAG(kc)` |                                  |Hold Left Alt and Left GUI and press `kc`             |
 |`RSG(kc)` |                                  |Hold Right Shift and Right GUI and press `kc`         |
@@ -822,8 +822,8 @@ See also: [Swap Hands](feature_swap_hands.md)
 |Key        |Description                                                              |
 |-----------|-------------------------------------------------------------------------|
 |`SH_T(key)`|Sends `key` with a tap; momentary swap when held.                        |
-|`SW_ON`    |Turns on swapping and leaves it on.                                      |
-|`SW_OFF`   |Turn off swapping and leaves it off. Good for returning to a known state.|
+|`SH_ON`    |Turns on swapping and leaves it on.                                      |
+|`SH_OFF`   |Turn off swapping and leaves it off. Good for returning to a known state.|
 |`SH_MON`   |Swaps hands when pressed, returns to normal when released (momentary).   |
 |`SH_MOFF`  |Momentarily turns off swap.                                              |
 |`SH_TG`    |Toggles swap on and off with every key press.                            |

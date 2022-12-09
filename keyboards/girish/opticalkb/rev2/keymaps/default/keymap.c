@@ -10,7 +10,7 @@ bool     is_cmd_tab_active = false;
 uint16_t cmd_tab_timer     = 0;
 
 // Defines the keycodes used by our macros in process_record_user
-enum custom_keycodes { CMD_GRV = SAFE_RANGE, CMD_TAB };
+enum custom_keycodes { CMD_GRV = SAFE_RANGE, CMD_TAB, UP_DIR };
 
 // Defines names for use in layer keycodes and the keymap
 enum layer_names { _BASE, _FN, _LAYER2 };
@@ -23,14 +23,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         CMD_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, LGUI(KC_LEFT), LGUI(KC_RIGHT),
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, 
         OSM(MOD_LCTL), LT(_FN, KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_QUOT, OSM(MOD_RALT),
-        OSM(MOD_LSFT), OSM(MOD_LSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_RSFT), KC_HOME, 
+        KC_CAPS, OSM(MOD_LSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_RSFT), UP_DIR, 
         OSM(MOD_LALT), KC_BTN1, CMD_GRV, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, KC_PGDN, KC_PGUP, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT
     ),
     [_FN]   = LAYOUT(
-        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END,
+        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, BL_DOWN, BL_UP,
         _______, DYN_REC_STOP, _______, DYN_MACRO_PLAY1, _______, _______, _______, _______, LGUI(KC_LEFT), LGUI(KC_RIGHT), _______, _______, _______, _______, 
         _______, _______, _______, DYN_REC_START1, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______, _______, _______, _______, 
-        _______, _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, _______, _______, _______, 
+        _______, _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, _______, _______, BL_TOGG, 
         QK_BOOT, KC_BTN3, _______, _______, _______, _______, _______, LALT(KC_BSPC), KC_END, KC_HOME, _______, KC_WH_D, KC_WH_U, _______ 
     ),
     [_LAYER2]   = LAYOUT(
@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void keyboard_post_init_user(void) {
     // Customise these values to desired behaviour
-    // debug_enable=true;
+    debug_enable=true;
     // debug_matrix=true;
     // debug_keyboard=true;
     // debug_mouse=true;
@@ -52,9 +52,9 @@ void keyboard_post_init_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // If console is enabled, it will print the matrix position and status of each key pressed
-#ifdef CONSOLE_ENABLE
-    uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %u, time: %u, interrupt: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
-#endif
+// #ifdef CONSOLE_ENABLE
+//     uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %u, time: %u, interrupt: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
+// #endif
 
     switch (keycode) {
         case CMD_GRV:
@@ -81,6 +81,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_TAB);
             }
             return true;
+        case UP_DIR:
+            if (record->event.pressed) {
+                SEND_STRING("../");
+            }
+            return false;
        default:
             return true; // Process all other keycodes normally
     }
@@ -88,12 +93,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void matrix_scan_user(void) { // The very important timer.
     if (is_cmd_grv_active) {
-        if (timer_elapsed(cmd_grv_timer) > 700) {
+        if (timer_elapsed(cmd_grv_timer) > 990) {
             unregister_code(KC_LGUI);
             is_cmd_grv_active = false;
         }
     } else if (is_cmd_tab_active) {
-        if (timer_elapsed(cmd_tab_timer) > 700) {
+        if (timer_elapsed(cmd_tab_timer) > 990) {
             unregister_code(KC_LGUI);
             is_cmd_tab_active = false;
         }
@@ -112,6 +117,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+/* https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md */
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LT(_FN, KC_ESC):
@@ -121,7 +127,7 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-#if 0
+#if 1
 /* Brighten leds when capslock is on */
 bool led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
   if (host_keyboard_led_state().caps_lock) {
@@ -143,7 +149,7 @@ const is31_led PROGMEM g_is31_leds[LED_MATRIX_LED_COUNT] = {
     { 0, C2_1  }, { 0, C2_2  }, { 0, C2_3  }, { 0, C2_4  }, { 0, C2_5  }, { 0, C2_6  }, { 0, C2_7  }, { 0, C2_8  }, { 0, C2_9  }, { 0, C2_10 }, { 0, C2_11 }, { 0, C2_12 }, { 0, C2_13 }, { 0, C2_14 },
     { 0, C3_1  }, { 0, C3_2  }, { 0, C3_3  }, { 0, C3_4  }, { 0, C3_5  }, { 0, C3_6  }, { 0, C3_7  }, { 0, C3_8  }, { 0, C3_9  }, { 0, C3_10 }, { 0, C3_11 }, { 0, C3_12 }, { 0, C3_13 }, { 0, C3_14 }, { 0, C3_15 },
     { 0, C4_1  }, { 0, C4_2  }, { 0, C4_3  }, { 0, C4_4  }, { 0, C4_5  }, { 0, C4_6  }, { 0, C4_7  }, { 0, C4_8  }, { 0, C4_9  }, { 0, C4_10 }, { 0, C4_11 }, { 0, C4_12 }, { 0, C4_13 }, { 0, C4_14 }, 
-    { 0, C5_1  }, { 0, C5_2  }, { 0, C5_3  }, { 0, C5_4  }, { 0, C5_5  }, { 0, C5_6  }, { 0, C5_7  }, { 0, C5_8  }, { 0, C5_9  }, { 0, C5_10 }, { 0, C5_11 }, { 0, C5_12 }, { 0, C5_13 }, { 0, C5_14 },
+    { 0, C7_9  }, { 0, C7_10  }, { 0, C7_11  }, { 0, C7_12  }, { 0, C6_12  }, { 0, C6_11  }, { 0, C6_10  }, { 0, C6_9  }, { 0, C5_9  }, { 0, C5_10 }, { 0, C5_11 }, { 0, C5_12 }, { 0, C5_13 }, { 0, C5_14 },
 };
 
 led_config_t g_led_config = { {

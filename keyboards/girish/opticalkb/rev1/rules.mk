@@ -4,6 +4,7 @@
 # MCU name
 MCU = STM32F401
 BOARD = BLACKPILL_STM32_F401
+WEAR_LEVELING_DRIVER = legacy
 
 # Bootloader selection
 BOOTLOADER = stm32-dfu
@@ -24,9 +25,9 @@ AUDIO_ENABLE = no           # Audio output
 DYNAMIC_MACRO_ENABLE = yes  # Dynamic macros
 CAPS_WORD_ENABLE = yes      # Enable current word being typed to be all caps
 
-# LED_MATRIX_ENABLE = yes
-# LED_MATRIX_DRIVER = IS31FL3731
-# SRC += blackpill_f401.c
+LED_MATRIX_ENABLE = yes
+LED_MATRIX_DRIVER = IS31FL3731
+SRC += blackpill_f401.c
 
 # turn this off after debugging
 CONSOLE_ENABLE = yes        # Console for debug

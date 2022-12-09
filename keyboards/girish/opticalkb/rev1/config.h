@@ -42,21 +42,26 @@
 /* turn off after debugging */
 // #define DEBUG_MATRIX_SCAN_RATE
 
-#define LED_DRIVER_COUNT 1
-#define DRIVER_LED_TOTAL 74
-#define LED_DRIVER_ADDR_1 0b1110100
-
-/* 255 is maximum intensity */
-#define LED_DISABLE_WHEN_USB_SUSPENDED
-// limits maximum brightness of LEDs (max 256)
-#define LED_MATRIX_MAXIMUM_BRIGHTNESS 120
-// limits in milliseconds how frequently an animation will update the LEDs. 16 
-// (16ms) is equivalent to limiting to 60fps (increases keyboard 
-// responsiveness)
-// At 16ms matrix scan frequency redues from 1000 to 350, at 100ms it is 880 and 
-// at 1000ms it is 980
-#define LED_MATRIX_LED_FLUSH_LIMIT 100
-
+#if defined(LED_MATRIX_ENABLE)
+    #define LED_DRIVER_COUNT 1
+    #define DRIVER_LED_TOTAL 74
+    #define LED_MATRIX_LED_COUNT DRIVER_LED_TOTAL
+    #define LED_DRIVER_ADDR_1 0b1110100
+    /* 255 is maximum intensity */
+    #define LED_DISABLE_WHEN_USB_SUSPENDED
+    // limits maximum brightness of LEDs (max 256)
+    #define LED_MATRIX_MAXIMUM_BRIGHTNESS 160
+    // limits in milliseconds how frequently an animation will update the LEDs. 16 
+    // (16ms) is equivalent to limiting to 60fps (increases keyboard 
+    // responsiveness)
+    // At 16ms matrix scan frequency redues from 1000 to 350, at 100ms it is 880 and 
+    // at 1000ms it is 980
+    #define LED_MATRIX_LED_FLUSH_LIMIT 100
+    #define ENABLE_LED_MATRIX_ALPHAS_MODS
+    #define ENABLE_LED_MATRIX_BREATHING
+    #define ENABLE_LED_MATRIX_WAVE_LEFT_RIGHT
+    #define ENABLE_LED_MATRIX_WAVE_UP_DOWN
+#endif
 
 /*
  * Split Keyboard specific options, make sure you have 'SPLIT_KEYBOARD = yes' in your rules.mk, and define SOFT_SERIAL_PIN.

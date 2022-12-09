@@ -29,7 +29,7 @@ CAPS_WORD_ENABLE = yes      # Enable current word being typed to be all caps
 # SRC += blackpill_f401.c
 
 # turn this off after debugging
-# CONSOLE_ENABLE = yes        # Console for debug
+CONSOLE_ENABLE = yes        # Console for debug
 
 CUSTOM_MATRIX = lite
 SRC += matrix.c

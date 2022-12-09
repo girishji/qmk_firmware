@@ -27,11 +27,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         OSM(MOD_LALT), KC_BTN1, CMD_GRV, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, KC_PGDN, KC_PGUP, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_CAPS
     ),
     [_FN]   = LAYOUT(
-        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END,
+        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, BL_INC, BL_DEC,
         _______, DYN_REC_STOP, _______, DYN_MACRO_PLAY1, _______, _______, _______, _______, LGUI(KC_LEFT), LGUI(KC_RIGHT), _______, _______, _______, _______, 
         _______, _______, _______, DYN_REC_START1, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______, _______, _______, _______, 
-        _______, _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, _______, _______, _______, _______, 
-        RESET, KC_BTN3, _______, _______, _______, _______, _______, LALT(KC_BSPC), KC_END, KC_HOME, _______, KC_WH_D, KC_WH_U, _______, _______
+        _______, _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, _______, _______, BL_STEP, _______, 
+        RESET, KC_BTN3, _______, _______, _______, _______, BL_TOGG, LALT(KC_BSPC), KC_END, KC_HOME, _______, KC_WH_D, KC_WH_U, _______, _______
     ),
     [_LAYER2]   = LAYOUT(
         _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END,
@@ -44,9 +44,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void keyboard_post_init_user(void) {
     // Customise these values to desired behaviour
-    // debug_enable=true;
-    // debug_matrix=true;
-    // debug_keyboard=true;
+    debug_enable=true;
+    debug_matrix=true;
+    debug_keyboard=true;
     // debug_mouse=true;
 }
 
@@ -88,12 +88,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void matrix_scan_user(void) { // The very important timer.
     if (is_cmd_grv_active) {
-        if (timer_elapsed(cmd_grv_timer) > 700) {
+        if (timer_elapsed(cmd_grv_timer) > 990) {
             unregister_code(KC_LGUI);
             is_cmd_grv_active = false;
         }
     } else if (is_cmd_tab_active) {
-        if (timer_elapsed(cmd_tab_timer) > 700) {
+        if (timer_elapsed(cmd_tab_timer) > 900) {
             unregister_code(KC_LGUI);
             is_cmd_tab_active = false;
         }
@@ -123,7 +123,7 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
 
 #if 0
 /* Brighten leds when capslock is on */
-void led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+bool led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
   if (host_keyboard_led_state().caps_lock) {
         for (uint8_t i = led_min; i <= led_max; i++) {
             if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
@@ -131,6 +131,7 @@ void led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             }
         }
     }
+    return true;
 }
 
 const is31_led PROGMEM g_is31_leds[DRIVER_LED_TOTAL] = {

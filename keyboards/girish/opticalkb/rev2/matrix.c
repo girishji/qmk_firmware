@@ -11,7 +11,11 @@
 #define DEBOUNCE 0
 
 #ifndef WAIT_AFTER_COL_SELECT
-#define WAIT_AFTER_COL_SELECT 30  // 18 works
+#define WAIT_AFTER_COL_SELECT 20
+#endif
+
+#ifndef WAIT_AFTER_COL_DONE
+#define WAIT_AFTER_COL_DONE 15  // 0 works
 #endif
 
 #define COL_COUNT 9
@@ -25,8 +29,8 @@ static const pin_t col_pins_b[COL_COUNT] = { GP0, GP1, GP2, GP3, GP4, GP5, GP6, 
 
 matrix_row_t col_selector[MATRIX_COLS] = { 0 };
 
-// void is31fl3731_init(void);
-// void is31fl3731_all_led_on(uint8_t brightness_level);
+void is31fl3731_init(void);
+void is31fl3731_all_led_on(uint8_t brightness_level);
 
 void matrix_init_custom(void)
 {
@@ -54,8 +58,8 @@ void matrix_init_custom(void)
         }
     }
 
-    // is31fl3731_init();
-    // is31fl3731_all_led_on(0);
+    is31fl3731_init();
+    is31fl3731_all_led_on(0);
 }
 
 uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
@@ -76,6 +80,7 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
                 col_values >>= 1;
             }
         }
+        wait_us(WAIT_AFTER_COL_DONE);
 
         /* Matrix B */
         writePinHigh(row_pins_b[row]);
@@ -113,6 +118,7 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
             curr_matrix[1] |= (matrix_row_t)((col_values & 0x00000100) ? 0x0200 : 0); // col 9/10
             break;
         }
+        wait_us(WAIT_AFTER_COL_DONE);
     }
 
     bool changed = memcmp(current_matrix, curr_matrix, sizeof(curr_matrix)) != 0;

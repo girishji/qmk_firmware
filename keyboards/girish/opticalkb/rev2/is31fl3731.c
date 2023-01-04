@@ -79,7 +79,7 @@ void is31fl3731_all_led_on(uint8_t brightness_level) {
     // for (uint8_t i = 0x24; i < 0xb3; i++) {
     //     i2c_reg_write_uint8(i, 0x7f);
     // }
-    /* Turn down intensity to 1/4-th  */
+    /* Turn down intensity to 25%  */
     for (uint8_t i = 0x24; i < 0xb3; i++) {
         i2c_reg_write_uint8(i, 0x3f);
     }

@@ -11,11 +11,11 @@
 #define DEBOUNCE 0
 
 #ifndef WAIT_AFTER_COL_SELECT
-#define WAIT_AFTER_COL_SELECT 20
+#define WAIT_AFTER_COL_SELECT 60 // 18 works
 #endif
 
 #ifndef WAIT_AFTER_COL_DONE
-#define WAIT_AFTER_COL_DONE 15  // 0 works
+#define WAIT_AFTER_COL_DONE 60  // 0 works
 #endif
 
 #define COL_COUNT 9

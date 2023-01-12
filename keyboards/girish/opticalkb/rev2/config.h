@@ -6,8 +6,8 @@
 #include "config_common.h"
 
 /* key matrix size */
-#define MATRIX_ROWS 5
-#define MATRIX_COLS 15
+#define MATRIX_ROWS 8
+#define MATRIX_COLS 9
 
 /* Tap twice the shift key to enable caps on the current word being typed */
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD

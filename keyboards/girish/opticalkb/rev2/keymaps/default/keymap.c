@@ -3,11 +3,11 @@
 
 #include QMK_KEYBOARD_H
 
-bool     is_cmd_grv_active = false;
-uint16_t cmd_grv_timer     = 0;
+bool is_cmd_grv_active = false;
+uint16_t cmd_grv_timer = 0;
 
-bool     is_cmd_tab_active = false;
-uint16_t cmd_tab_timer     = 0;
+bool is_cmd_tab_active = false;
+uint16_t cmd_tab_timer = 0;
 
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes { CMD_GRV = SAFE_RANGE, CMD_TAB, UP_DIR };
@@ -15,6 +15,7 @@ enum custom_keycodes { CMD_GRV = SAFE_RANGE, CMD_TAB, UP_DIR };
 // Defines names for use in layer keycodes and the keymap
 enum layer_names { _BASE, _FN, _LAYER2 };
 
+// clang-format off
 // Mod_Tap feature causes delay and erratic behaviour. Removing it from
 // important keys like Esc and PgDn
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -22,8 +23,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT(
         CMD_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, LGUI(KC_LEFT), LGUI(KC_RIGHT),
         KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, 
-        OSM(MOD_LCTL), LT(_FN, KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_QUOT, OSM(MOD_RALT),
-        UP_DIR, OSM(MOD_LSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_RSFT), KC_CAPS, 
+        OSM(MOD_LCTL), KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_QUOT, OSM(MOD_RALT),
+        UP_DIR, OSM(MOD_RSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_LSFT), KC_CAPS, 
         OSM(MOD_LALT), KC_BTN1, CMD_GRV, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, KC_PGDN, KC_PGUP, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT
     ),
     [_FN]   = LAYOUT(
@@ -41,90 +42,95 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         QK_BOOT, _______, _______, _______, _______, _______, _______, _______, KC_END, KC_HOME, _______, _______, _______, _______
     )
 };
+// clang-format on
 
 void keyboard_post_init_user(void) {
-    // Customise these values to desired behaviour
-    // debug_enable=true;
-    // debug_matrix=true;
-    // debug_keyboard=true;
-    // debug_mouse=true;
+  // Customise these values to desired behaviour
+  // debug_enable=true;
+  // debug_matrix=true;
+  // debug_keyboard=true;
+  // debug_mouse=true;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // If console is enabled, it will print the matrix position and status of each key pressed
+  // If console is enabled, it will print the matrix position and status of each
+  // key pressed
 #ifdef CONSOLE_ENABLE
-    // uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %u, time: %u, interrupt: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
+  // uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %u, time: %u,
+  // interrupt: %u, count: %u\n", keycode, record->event.key.col,
+  // record->event.key.row, record->event.pressed, record->event.time,
+  // record->tap.interrupted, record->tap.count);
 #endif
 
-    switch (keycode) {
-        case CMD_GRV:
-            if (record->event.pressed) {
-                if (!is_cmd_grv_active) {
-                    is_cmd_grv_active = true;
-                    register_code(KC_LGUI);
-                }
-                cmd_grv_timer = timer_read();
-                register_code(KC_GRV);
-            } else {
-                unregister_code(KC_GRV);
-            }
-            return true;
-        case CMD_TAB:
-            if (record->event.pressed) {
-                if (!is_cmd_tab_active) {
-                    is_cmd_tab_active = true;
-                    register_code(KC_LGUI);
-                }
-                cmd_tab_timer = timer_read();
-                register_code(KC_TAB);
-            } else {
-                unregister_code(KC_TAB);
-            }
-            return true;
-        case UP_DIR:
-            if (record->event.pressed) {
-                SEND_STRING("../");
-            }
-            return false;
-       default:
-            return true; // Process all other keycodes normally
+  switch (keycode) {
+  case CMD_GRV:
+    if (record->event.pressed) {
+      if (!is_cmd_grv_active) {
+        is_cmd_grv_active = true;
+        register_code(KC_LGUI);
+      }
+      cmd_grv_timer = timer_read();
+      register_code(KC_GRV);
+    } else {
+      unregister_code(KC_GRV);
     }
+    return true;
+  case CMD_TAB:
+    if (record->event.pressed) {
+      if (!is_cmd_tab_active) {
+        is_cmd_tab_active = true;
+        register_code(KC_LGUI);
+      }
+      cmd_tab_timer = timer_read();
+      register_code(KC_TAB);
+    } else {
+      unregister_code(KC_TAB);
+    }
+    return true;
+  case UP_DIR:
+    if (record->event.pressed) {
+      SEND_STRING("../");
+    }
+    return false;
+  default:
+    return true; // Process all other keycodes normally
+  }
 }
 
 void matrix_scan_user(void) { // The very important timer.
-    if (is_cmd_grv_active) {
-        if (timer_elapsed(cmd_grv_timer) > 990) {
-            unregister_code(KC_LGUI);
-            is_cmd_grv_active = false;
-        }
-    } else if (is_cmd_tab_active) {
-        if (timer_elapsed(cmd_tab_timer) > 990) {
-            unregister_code(KC_LGUI);
-            is_cmd_tab_active = false;
-        }
+  if (is_cmd_grv_active) {
+    if (timer_elapsed(cmd_grv_timer) > 990) {
+      unregister_code(KC_LGUI);
+      is_cmd_grv_active = false;
     }
+  } else if (is_cmd_tab_active) {
+    if (timer_elapsed(cmd_tab_timer) > 990) {
+      unregister_code(KC_LGUI);
+      is_cmd_tab_active = false;
+    }
+  }
 }
 
 // Returns time interval for double tap
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case KC_LSFT:
-        case KC_RSFT:
-        case OSM(MOD_LSFT):
-            return TAPPING_TERM + 400;
-        default:
-            return TAPPING_TERM;
-    }
+  switch (keycode) {
+  case KC_LSFT:
+  case KC_RSFT:
+  case OSM(MOD_LSFT):
+    return TAPPING_TERM + 400;
+  default:
+    return TAPPING_TERM;
+  }
 }
 
 /* https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md */
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LT(_FN, KC_ESC):
-            return true;
-        default:
-            return false;
-    }
+  switch (keycode) {
+  case LT(_FN, KC_ESC):
+    return true;
+  default:
+    return false;
+  }
 }
 
 #if 0

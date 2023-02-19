@@ -11,13 +11,13 @@
 #define DEBOUNCE 0
 
 #ifndef WAIT_AFTER_COL_SELECT
-#define WAIT_AFTER_COL_SELECT 17
+#define WAIT_AFTER_COL_SELECT 25 // 17 works
 #endif
 
 /* Debounce interval, count of scan frequency, max 65535.
  *   Debounce value is approximately (OPT_DEBOUNCE * WAIT_AFTER_COL_SELECT * 8) usec.
  */
-#define OPT_DEBOUNCE 20 // 10 works
+#define OPT_DEBOUNCE 30 // 10 works
 
 #define COL_COUNT 9
 #define ROW_COUNT 4

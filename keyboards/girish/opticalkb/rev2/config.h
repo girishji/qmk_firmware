@@ -9,7 +9,7 @@
 #define MATRIX_ROWS 8
 #define MATRIX_COLS 9
 
-/* Tap twice the shift key to enable caps on the current word being typed */
+/* Tap twice the LEFT shift key to enable caps on the current word being typed */
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 
 /* Mod tap does not register otherwise */

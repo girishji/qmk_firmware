@@ -9,8 +9,15 @@ uint16_t cmd_grv_timer = 0;
 bool is_cmd_tab_active = false;
 uint16_t cmd_tab_timer = 0;
 
+bool led_matrix_on = true;
+
 // Defines the keycodes used by our macros in process_record_user
-enum custom_keycodes { CMD_GRV = SAFE_RANGE, CMD_TAB, UP_DIR };
+enum custom_keycodes {
+  CMD_GRV = SAFE_RANGE,
+  CMD_TAB,
+  UP_DIR,
+  LED_MATRIX_TOGGLE
+};
 
 // Defines names for use in layer keycodes and the keymap
 enum layer_names { _BASE, _FN, _LAYER2 };
@@ -32,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, DYN_REC_STOP, _______, DYN_MACRO_PLAY1, _______, _______, _______, _______, LGUI(KC_LEFT), LGUI(KC_RIGHT), _______, _______, _______, _______, 
         _______, _______, _______, DYN_REC_START1, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______, DYN_MACRO_PLAY1, _______, _______, 
         DYN_REC_START1, _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, _______, _______, BL_TOGG, 
-        QK_BOOT, KC_BTN3, _______, _______, _______, _______, DYN_REC_START1, LALT(KC_BSPC), KC_END, KC_HOME, _______, KC_WH_D, KC_WH_U, _______ 
+        QK_BOOT, KC_BTN3, _______, _______, _______, _______, LED_MATRIX_TOGGLE, LALT(KC_BSPC), KC_END, KC_HOME, _______, KC_WH_D, KC_WH_U, _______ 
     ),
     [_LAYER2]   = LAYOUT(
         _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END,
@@ -43,6 +50,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 // clang-format on
+
+void is31fl3731_all_led_on(uint8_t brightness_level);
+void is31fl3731_all_led_off(void);
 
 void keyboard_post_init_user(void) {
   // Customise these values to desired behaviour
@@ -90,6 +100,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   case UP_DIR:
     if (record->event.pressed) {
       SEND_STRING("../");
+    }
+    return false;
+  case LED_MATRIX_TOGGLE:
+    if (record->event.pressed) {
+      if (led_matrix_on) {
+        is31fl3731_all_led_off();
+      } else {
+        is31fl3731_all_led_on(25);
+      }
+      led_matrix_on = !led_matrix_on;
     }
     return false;
   default:

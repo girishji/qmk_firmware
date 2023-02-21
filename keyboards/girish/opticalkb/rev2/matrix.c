@@ -58,7 +58,7 @@ void matrix_init_custom(void)
     }
 
     is31fl3731_init();
-    is31fl3731_all_led_on(0);
+    is31fl3731_all_led_on(25);
 }
 
 uint8_t matrix_scan_custom(matrix_row_t current_matrix[])

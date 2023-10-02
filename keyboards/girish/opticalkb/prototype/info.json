@@ -1,0 +1,23 @@
+{
+    "keyboard_name": "opticalkb",
+    "url": "https://github.com/girishji/optical-keyboard",
+    "maintainer": "girish",
+    "manufacturer": "girish",
+    "debounce": 0,
+    "usb": {
+        "vid": "0xFEFD",
+        "pid": "0x5304",
+        "device_version": "1.0.0"
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                {"label":"K000", "x":0.5, "y":0}, {"label":"K001", "x":1.5, "y":0}, {"label":"K002", "x":2.5, "y":0},
+                {"label":"K100", "x":0.5, "y":1, "w":1.5}, {"label":"K101", "x":2, "y":1}, {"label":"K102", "x":3, "y":1},
+                {"label":"K200", "x":0, "y":2}, {"label":"K201", "x":1, "y":2, "w":1.25}, {"label":"K202", "x":2.25, "y":2},
+                {"label":"K300", "x":0, "y":3, "w":1.75}, {"label":"K301", "x":1.75, "y":3}, {"label":"K302", "x":2.75, "y":3},
+                {"label":"K400", "x":0, "y":3, "w":1.75}, {"label":"K401", "x":1.75, "y":3}, {"label":"K402", "x":2.75, "y":3}
+            ]
+        }
+    }
+}

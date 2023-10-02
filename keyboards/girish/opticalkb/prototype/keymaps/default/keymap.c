@@ -12,52 +12,64 @@ uint16_t cmd_tab_timer = 0;
 bool led_matrix_on = true;
 
 // clang-format off
-// Defines the keycodes used by our macros in process_record_user
+// Define the keycodes used by macros in this file
 enum custom_keycodes {
-  CMD_GRV = SAFE_RANGE,
-  CMD_TAB,
-  UP_DIR,
-  LED_MATRIX_TOGGLE
+    CMD_GRV = SAFE_RANGE,
+    CMD_TAB,
+    UP_DIR,
+    LED_MATRIX_TOGGLE
 };
 // clang-format on
 
-// Defines names for use in layer keycodes and the keymap
-enum layer_names { _BASE, _FN, _LAYER2 };
+// Define names for use in layer keycodes and the keymap
+enum layer_names { _BASE, _FN };
 
 // clang-format off
-// Mod_Tap feature causes delay and erratic behaviour. Removing it from
-// important keys like Esc and PgDn
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Base */
     [_BASE] = LAYOUT(
-        CMD_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, LGUI(KC_LEFT), LGUI(KC_RIGHT),
-        KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS,
-        OSM(MOD_LCTL), KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_QUOT, KC_UP,
-        LALT(KC_C), OSM(MOD_RSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_LSFT), KC_DOWN,
-        OSM(MOD_LALT), CMD_GRV, KC_BTN1, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, KC_PGDN, KC_PGUP, RCTL(KC_T), OSM(MOD_RALT), KC_LEFT, KC_RIGHT
+        KC_1, KC_2, KC_3,
+        KC_Q, KC_W, KC_E,
+        KC_A, KC_S, KC_D,
+        KC_Z, KC_X, KC_C,
+        KC_U, KC_I, KC_P
     ),
     [_FN]   = LAYOUT(
-        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, BL_DOWN, BL_UP,
-        _______, DYN_REC_START1, _______, DYN_MACRO_PLAY1, DYN_MACRO_PLAY1, _______, _______, _______, LGUI(KC_LEFT), LGUI(KC_RIGHT), _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, _______, _______, BL_TOGG,
-        QK_BOOT, _______, KC_BTN3, _______, _______, _______, LED_MATRIX_TOGGLE, LALT(KC_BSPC), KC_END, KC_HOME, _______, KC_WH_D, KC_WH_U, _______
+        _______, _______, _______,
+        _______, _______, _______,
+        _______, _______, _______,
+        _______, _______, _______,
+        _______, _______, _______
     ),
-    [_LAYER2]   = LAYOUT(
-        _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END,
-        _______, _______, _______, _______, _______, _______, _______, _______, LGUI(KC_LEFT), LGUI(KC_RIGHT), _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, LALT(KC_LEFT), LALT(KC_DOWN), LALT(KC_UP), LALT(KC_RIGHT), _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        QK_BOOT, _______, _______, _______, _______, _______, _______, _______, KC_END, KC_HOME, _______, _______, _______, _______
-    )
+
+    /* [_BASE] = LAYOUT( */
+    /*     CMD_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, LGUI(KC_LEFT), LGUI(KC_RIGHT), */
+    /*     KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, */ 
+    /*     OSM(MOD_LCTL), KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_QUOT, KC_UP, */
+    /*     LALT(KC_C), OSM(MOD_RSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_LSFT), KC_DOWN, */ 
+    /*     OSM(MOD_LALT), CMD_GRV, KC_BTN1, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, KC_PGDN, KC_PGUP, RCTL(KC_T), OSM(MOD_RALT), KC_LEFT, KC_RIGHT */
+    /* ), */
+    /* [_FN]   = LAYOUT( */
+    /*     _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, BL_DOWN, BL_UP, */
+    /*     _______, DYN_REC_START1, _______, DYN_MACRO_PLAY1, DYN_MACRO_PLAY1, _______, _______, _______, LGUI(KC_LEFT), LGUI(KC_RIGHT), _______, _______, _______, _______, */ 
+    /*     _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______, _______, _______, _______, */ 
+    /*     _______, _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, _______, _______, BL_TOGG, */ 
+    /*     QK_BOOT, _______, KC_BTN3, _______, _______, _______, LED_MATRIX_TOGGLE, LALT(KC_BSPC), KC_END, KC_HOME, _______, KC_WH_D, KC_WH_U, _______ */ 
+    /* ), */
+    /* [_LAYER2]   = LAYOUT( */
+    /*     _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_HOME, KC_END, */
+    /*     _______, _______, _______, _______, _______, _______, _______, _______, LGUI(KC_LEFT), LGUI(KC_RIGHT), _______, _______, _______, _______, */ 
+    /*     _______, _______, _______, _______, _______, _______, _______, LALT(KC_LEFT), LALT(KC_DOWN), LALT(KC_UP), LALT(KC_RIGHT), _______, _______, _______, _______, */ 
+    /*     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, */ 
+    /*     QK_BOOT, _______, _______, _______, _______, _______, _______, _______, KC_END, KC_HOME, _______, _______, _______, _______ */
+    /* ) */
 };
 // clang-format on
 
-void is31fl3731_all_led_on(uint8_t brightness_level);
-void is31fl3731_all_led_off(void);
+/* void is31fl3731_all_led_on(uint8_t brightness_level); */
+/* void is31fl3731_all_led_off(void); */
 
 void keyboard_post_init_user(void) {
-  // Customise these values to desired behaviour
   // debug_enable=true;
   // debug_matrix=true;
   // debug_keyboard=true;
@@ -68,10 +80,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // If console is enabled, it will print the matrix position and status of each
   // key pressed
 #ifdef CONSOLE_ENABLE
-  // uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %u, time: %u,
-  // interrupt: %u, count: %u\n", keycode, record->event.key.col,
-  // record->event.key.row, record->event.pressed, record->event.time,
-  // record->tap.interrupted, record->tap.count);
+  uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %u, time: %u, interrupt: %u, count: %u\n",
+          keycode, record->event.key.col, record->event.key.row,
+          record->event.pressed, record->event.time, record->tap.interrupted,
+          record->tap.count);
 #endif
 
   switch (keycode) {
@@ -105,21 +117,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return false;
   case LED_MATRIX_TOGGLE:
-    if (record->event.pressed) {
-      if (led_matrix_on) {
-        is31fl3731_all_led_off();
-      } else {
-        is31fl3731_all_led_on(25);
-      }
-      led_matrix_on = !led_matrix_on;
-    }
+    /* if (record->event.pressed) { */
+    /*   if (led_matrix_on) { */
+    /*     is31fl3731_all_led_off(); */
+    /*   } else { */
+    /*     is31fl3731_all_led_on(25); */
+    /*   } */
+    /*   led_matrix_on = !led_matrix_on; */
+    /* } */
     return false;
   default:
     return true; // Process all other keycodes normally
   }
 }
 
-void matrix_scan_user(void) { // The very important timer.
+// Timer for cmd_grv
+void matrix_scan_user(void) {
   if (is_cmd_grv_active) {
     if (timer_elapsed(cmd_grv_timer) > 990) {
       unregister_code(KC_LGUI);

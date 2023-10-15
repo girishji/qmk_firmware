@@ -21,10 +21,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Base */
     [_BASE] = LAYOUT(
         CMD_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, LGUI(KC_LEFT), LGUI(KC_RIGHT),
-        KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, 
-        OSM(MOD_LCTL), LT(_FN, KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_QUOT, OSM(MOD_RALT),
-        OSM(MOD_LSFT), OSM(MOD_LSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_RSFT), KC_CAPS, KC_HOME,
-        OSM(MOD_LALT), KC_BTN1, CMD_GRV, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, KC_PGDN, KC_PGUP, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_END
+        KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS,
+        OSM(MOD_LCTL), LT(_FN, KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_QUOT, KC_UP,
+        OSM(MOD_LSFT), OSM(MOD_LSFT), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_RSFT), KC_DOWN, KC_HOME,
+        CMD_GRV, OSM(MOD_LALT), KC_BTN1, OSL(_FN), OSM(MOD_LGUI), KC_SPC, KC_GRV, KC_BSPC, KC_PGDN, KC_PGUP, LALT(KC_C), RCTL(KC_T), KC_LEFT, KC_RIGHT, KC_END
     ),
     [_FN]   = LAYOUT(
         _______, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, BL_INC, BL_DEC,
@@ -121,7 +121,7 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-#if 1
+#if 0
 /* Brighten leds when capslock is on */
 bool led_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
   if (host_keyboard_led_state().caps_lock) {

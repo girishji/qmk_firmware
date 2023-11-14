@@ -20,20 +20,24 @@
  */
 /* #define OPT_DEBOUNCE 30 // 10 works */
 
-#define COL_COUNT 3
-#define ROW_COUNT 5
+// #define ROW_COUNT 5
+// #define COL_COUNT 3
+#define ROW_COUNT 29
+#define COL_COUNT 1
 
 /* #define COL_COUNT 9 */
 /* #define ROW_COUNT 4 */
 /* #define MATRIX_COUNT 2 */
 
-static const pin_t row_pins[ROW_COUNT] = { GP0, GP1, GP2, GP3, GP4 };
-// static const pin_t row_pins[ROW_COUNT] = { GP0, GP0, GP0, GP0, GP0 };
+// static const pin_t row_pins[ROW_COUNT] = { GP0, GP1, GP2, GP3, GP4 };
+static const pin_t row_pins[ROW_COUNT] = { 
+    GP0, GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8, GP9,
+    GP10, GP11, GP12, GP13, GP14, GP15, GP16, GP17, GP18, GP19,
+    GP20, GP21, GP22, GP23, GP24, GP25, GP26, GP27, GP28
+};
 
-/* static const pin_t row_pins[ROW_COUNT] = { GP20, GP19, GP18, GP15 }; */
-/* static const pin_t row_pins_b[ROW_COUNT] = { GP14, GP13, GP12, GP11 }; */
-static const pin_t col_pins[COL_COUNT] = { GP5, GP6, GP7 };
-/* static const pin_t col_pins_b[COL_COUNT] = { GP0, GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8 }; */
+// static const pin_t col_pins[COL_COUNT] = { GP5, GP6, GP7 };
+static const pin_t col_pins[COL_COUNT] = { GP29 };
 
 /* void is31fl3731_init(void); */
 /* void is31fl3731_all_led_on(uint8_t brightness_level); */
@@ -97,17 +101,17 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
 
     // uprintf("-------\n");
     for (uint8_t row = 0; row < ROW_COUNT; row++) {
-        // if (row == 4) {
-        writePinHigh(row_pins[row]);
-        // }
+        if (row == 0) {
+            writePinHigh(row_pins[row]);
+        }
+            uprintf("In scan matrix \n");
         // wait_us(WAIT_AFTER_COL_SELECT);
-        wait_us(15);
-        uint32_t col_values = palReadPort(0);
-        writePinLow(row_pins[row]);
-        // wait_ms(500);
-        // wait_us(200);
+        wait_us(50);
+        // uint32_t col_values = palReadPort(0);
+        // writePinLow(row_pins[row]);
+        wait_ms(500);
         // wait_us(WAIT_AFTER_COL_SELECT);
-        scan_matrix[row] |= (matrix_row_t)((col_values & 0x000000e0) >> 5);
+        // scan_matrix[row] |= (matrix_row_t)((col_values & 0x000000e0) >> 5);
         // uprintf("%x\n", scan_matrix[row]);
     }
 
@@ -155,14 +159,15 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
     /* } */
 
     bool changed = memcmp(current_matrix, scan_matrix, sizeof(scan_matrix)) != 0;
-    static int count = 0;
+    //XXX
+    changed = false;
+    // static int count = 0;
     if (changed) {
         memcpy(current_matrix, scan_matrix, sizeof(scan_matrix));
 
-        uprintf("----%d----\n", count++);
-        for (uint8_t row = 0; row < ROW_COUNT; row++) {
-            uprintf("%x\n", scan_matrix[row]);
-        }
+        // for (uint8_t row = 0; row < ROW_COUNT; row++) {
+        //     uprintf("%x\n", scan_matrix[row]);
+        // }
     }
     // XXX
     // changed = false;
@@ -200,5 +205,6 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
     /*         } */
     /*     } */
     /* } */
+
     return (uint8_t)changed;
 }

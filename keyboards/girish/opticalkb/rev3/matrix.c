@@ -11,10 +11,10 @@
 #define DEBOUNCE 0
 
 #ifndef WAIT_AFTER_COL_SELECT
-#define WAIT_AFTER_COL_SELECT 12 // 17 works
+#define WAIT_AFTER_COL_SELECT 12 // 12 works
 #endif
 
-#define DEBOUNCE_VAL (WAIT_AFTER_COL_SELECT * 8)
+#define DEBOUNCE_VAL 40  // 5 works
 
 #define COL_COUNT 15
 #define ROW_COUNT 5
@@ -55,8 +55,22 @@ void matrix_init_custom(void)
     // is31fl3731_all_led_on(80); // % brightness
 }
 
+// static inline matrix_row_t get_mask(uint16_t db[])
+// {
+//     matrix_row_t mrow = 0;
+//     for (uint8_t col = 0; col < MATRIX_COLS; col++) {
+//         mrow <<= 1;
+//         mrow |= (db[col] > 0) ? 1 : 0;
+//     }
+//     return mrow;
+// }
+
 uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
 {
+    // static bool debouncing = false;
+    static uint16_t debounce[MATRIX_ROWS][MATRIX_COLS] = { 0 };
+    static matrix_row_t mask[MATRIX_ROWS] = { 0 };
+    static bool debouncing = false;
     matrix_row_t scan_matrix[MATRIX_ROWS] = { 0 };
 
     for (uint8_t row = 0; row < ROW_COUNT; row++) {
@@ -67,7 +81,7 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
 
         if (cols > 0) {
             // reverse the bits read from GPIOs since column numbering is right-to-left in matrix
-            // reverse last 15 bits in ever smaller chunks for clean O(1)
+            // NOTE: using precomputed array will be faster.
             cols = ((cols & 0x0000ff00) >> 8) | ((cols & 0x000000ff) << 8);
             cols = ((cols & 0x0000f0f0) >> 4) | ((cols & 0x00000f0f) << 4);
             cols = ((cols & 0x0000cccc) >> 2) | ((cols & 0x00003333) << 2);
@@ -77,57 +91,43 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[])
         }
     }
 
-    static bool debouncing = false;
-    static uint16_t debounce[MATRIX_ROWS][MATRIX_COLS] = { 0 };
-
+    /* Decrement debounce count */
     if (debouncing) {
-        /* Decrement debounce count */
-        bool changed = false;
+        debouncing = false;
         for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
             for (uint8_t col = 0; col < MATRIX_COLS; col++) {
                 if (debounce[row][col] > 0) {
                     debounce[row][col] -= 1;
-                    changed = true;
+                    debouncing = true;
+                    if (debounce[row][col] == 0) {
+                        mask[row] &= ~(1 << col);
+                    }
                 }
             }
-        }
-        if (!changed) {
-            debouncing = false;
         }
     }
 
     bool changed = memcmp(current_matrix, scan_matrix, sizeof(scan_matrix)) != 0;
-    if (changed) {
-        if (!debouncing) {
-            /* Start debounce */
-            for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
-                matrix_row_t newkeys = current_matrix[row] ^ scan_matrix[row];
-                for (uint8_t col = 0; newkeys > 0 && col < MATRIX_COLS; col++) {
-                    if ((newkeys & 1) > 0) {
-                        debounce[row][col] = DEBOUNCE_VAL;
-                        debouncing = true;
-                    }
-                    newkeys >>= 1;
+    if (!changed) {
+        return 0;
+    }
+
+    changed = false;
+    for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+        matrix_row_t diff = (current_matrix[row] & ~(mask[row])) ^ (scan_matrix[row] & ~(mask[row]));
+        if (diff != 0) {
+            current_matrix[row] = (current_matrix[row] & mask[row]) | (scan_matrix[row] & ~(mask[row]));
+            mask[row] |= diff;
+            changed = true;
+            for (uint8_t col = 0; (col < MATRIX_COLS) && (diff > 0); col++) {
+                if ((diff & 1) > 0) {
+                    debounce[row][col] = DEBOUNCE_VAL;
+                    debouncing = true;
                 }
-            }
-            /* Report the key event (state change) */
-            memcpy(current_matrix, scan_matrix, sizeof(scan_matrix));
-        } else {
-            /* Mask key state changes that are within debounce period */
-            for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
-                for (uint8_t col = 0; col < MATRIX_COLS; col++) {
-                    if (debounce[row][col] > 0) {
-                        scan_matrix[row] &= ~(1 << col); // zero out the bit
-                        scan_matrix[row] |= current_matrix[row] & (1 << col);
-                    }
-                }
-            }
-            /* Report key event if necessary */
-            changed = memcmp(current_matrix, scan_matrix, sizeof(scan_matrix)) != 0;
-            if (changed) {
-                memcpy(current_matrix, scan_matrix, sizeof(scan_matrix));
+                diff >>= 1;
             }
         }
     }
+
     return (uint8_t)changed;
 }
